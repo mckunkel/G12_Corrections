@@ -29,7 +29,7 @@ namespace clas
     TString Pip_Hist_num(Double_t, Double_t);
     TString Prot_Hist_num(Double_t, Double_t);
     
-    TString correction_dir="/Users/michaelkunkel/WORK/CLAS/CLAS6/CODES/G12_NECCESSITIES/All_Corrections/broke";
+    TString correction_dir="/Users/michaelkunkel/WORK/CLAS/CLAS6/CODES/G12_NECCESSITIES/All_Corrections/";
     
     
     //################################## BEAM CORRECTION ##################################
@@ -3754,15 +3754,26 @@ namespace clas
     
     //Corrections were done by Michael C. Kunkel
     //mkunkel@jlab.org
-    double g12_trackEfficiency(double Vz, double P_Ptot_fit, double P_Phi_fit, double P_Theta_fit, double Ep_Ptot_fit,double Ep_Phi_fit, double Ep_Theta_fit, double Em_Ptot_fit, double Em_Phi_fit, double Em_Theta_fit, TString DEG_or_RAD){
+    double g12_trackEfficiency(double Vz, double P_Ptot_fit, double P_Phi_fit, double P_Theta_fit, double Ep_Ptot_fit,double Ep_Phi_fit, double Ep_Theta_fit, double Em_Ptot_fit, double Em_Phi_fit, double Em_Theta_fit, TString DEG_or_RAD, bool MultPhoton){
       
       
       Double_t tot_eff = 0.0;
       
       
-      TString P_location = correction_dir + "EFFICIENCY_HISTS/Efficiency_Plots_Compared_Prot_new.root";
-      TString Ep_location = correction_dir + "EFFICIENCY_HISTS/Efficiency_Plots_Compared_Pip_new.root";
-      TString Em_location = correction_dir + "EFFICIENCY_HISTS/Efficiency_Plots_Compared_Pim_new.root";
+      TString P_location;
+      TString Ep_location;
+      TString Em_location;
+      
+      if (MultPhoton) {
+        P_location = correction_dir + "EFFICIENCY_HISTS/Efficiency_Plots_Compared_Prot_multbeam.root";
+        Ep_location = correction_dir + "EFFICIENCY_HISTS/Efficiency_Plots_Compared_Pip_multbeam.root";
+        Em_location = correction_dir + "EFFICIENCY_HISTS/Efficiency_Plots_Compared_Pim_multbeam.root";
+      }else{
+        P_location = correction_dir + "EFFICIENCY_HISTS/Efficiency_Plots_Compared_Prot_new.root";
+        Ep_location = correction_dir + "EFFICIENCY_HISTS/Efficiency_Plots_Compared_Pip_new.root";
+        Em_location = correction_dir + "EFFICIENCY_HISTS/Efficiency_Plots_Compared_Pim_new.root";
+      }
+      
       
       TFile P_Data(P_location,"READ");
       TFile Ep_Data(Ep_location,"READ");
