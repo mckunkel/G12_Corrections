@@ -1,0 +1,13 @@
+source buildCentos65.cshrc ; 
+foreach index (`seq 10`)
+echo file $index is running
+Pim_Efficiency data1_$index.bos data2_$index.bos
+PPip_missingPim Ppp_cE.root Pim_Efficiency_$index.root
+rm Ppp_cE.root
+Pip_Efficiency data1_$index.bos data2_$index.bos
+PPim_missingPip Ppp_cE.root Pip_Efficiency_$index.root
+rm Ppp_cE.root
+Prot_Efficiency data1_$index.bos data2_$index.bos
+PipPim_missingProt Ppp_cE.root Prot_Efficiency_$index.root
+rm Ppp_cE.root
+end
