@@ -1,8 +1,15 @@
 \begin{thebibliography}{1}
 
-\bibitem{ELSA11}
-V.~Crede et~al.
-\newblock {Photoproduction of Neutral Pions off Protons}.
-\newblock {\em Phys.Rev.}, C84:055203, 2011.
+\bibitem{g12note}
+G12~Experimental Group.
+\newblock {g12 Analysis Procedures, Statistics and Systematics}.
+\newblock Technical report, CLAS-NOTE 2017 - 002, 2017.
+
+\bibitem{Kunkel}
+M.~C. Kunkel et~al.
+\newblock Exclusive photoproduction of ${\ensuremath{\pi}}^{0}$ up to large
+  values of mandelstam variables $s,\phantom{\rule{0.16em}{0ex}}t,$ and $u$
+  with {CLAS}.
+\newblock {\em Phys. Rev. C}, 98:015207, Jul 2018.
 
 \end{thebibliography}

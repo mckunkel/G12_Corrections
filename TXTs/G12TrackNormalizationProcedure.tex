@@ -23,6 +23,36 @@
 \usepackage[final]{pdfpages}
 \author{Michael C. Kunkel}
 \title{G12 Track Normalization Procedure}
+\hypersetup{
+	colorlinks,
+	citecolor=purple,
+	filecolor=black,
+	linkcolor=blue,
+	urlcolor=black
+}
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+	language=Java,
+	aboveskip=3mm,
+	belowskip=3mm,
+	showstringspaces=false,
+	columns=flexible,
+	basicstyle={\small\ttfamily},
+	numbers=none,
+	numberstyle=\tiny\color{gray},
+	keywordstyle=\color{blue},
+	commentstyle=\color{dkgreen},
+	stringstyle=\color{mauve},
+	breaklines=true,
+	breakatwhitespace=true,
+	tabsize=3
+}
 \newcommand{\abbr}[1]{\textsc{\texttt{#1}}}
 
 \def\piz{\pi^{0}}
@@ -75,7 +105,7 @@ In this analysis, a normalization constant on the order of 18\% was also needed.
   \gamma p \rightarrow p \pi^- (\pi^+)  \nonumber \\
   \gamma p \rightarrow \pi^+ \pi^- (p)
 \end{align}
-were skimmed from data and simulated using the prescription chain in the approved G12 analysis procedures. In order to eliminate any statistical effects, $\frac{1}{4}$ of the entire g12 data set was used and over 1 billion events were generated for simulation. Table~\ref{tab:eff_events} lists the number of events analyzed for each of the topologies listed in Eq.~\ref{eq:eff_topologies}.
+were skimmed from data and simulated using the prescription chain in the approved G12 analysis procedures~\cite{g12note}. In order to eliminate any statistical effects, $\frac{1}{4}$ of the entire g12 data set was used and over 1 billion events were generated for simulation. Table~\ref{tab:eff_events} lists the number of events analyzed for each of the topologies listed in Eq.~\ref{eq:eff_topologies}.
 \input{\tables/eff_stats.tex}
 The data had two orders of magnitude higher statistics than the simulation, this was done to ensure enough events to analyze in the high momentum spectrum. The simulation generated the listed reactions in phase space using PLUTO++ as the phase space generator . The data and simulation were analyzed in the same manner.
 
@@ -163,7 +193,7 @@ The total over-efficiency was calculated as the product of each track's over-eff
 \FloatBarrier
 %
 \subsection{Normalization Comparison}
-To validate the g12 normalization results, the g12 $\pi^0$ differential cross-section was calculated using the G11 global normalization factor and then compared to the g12 $\pi^0$ differential cross-section using the g12 normalization procedure results. It is shown in Fig.~\ref{fig:toteff_compareI} and Fig.~\ref{fig:toteff_compareII} that the 2 methods agree with one another except for the very forward regions of $\cos\theta^{\pi^0}_{C.M.}$, where the cross-section using the dynamic normalization is larger than the cross-section measured with the G11 global normalization, however the larger cross-sections at forward $\cos\theta^{\pi^0}_{C.M.}$ agree very well with the past results of~\cite{ELSA11}.
+To validate the g12 normalization results, the g12 $\pi^0$ differential cross-section was calculated using the G11 global normalization factor and then compared to the g12 $\pi^0$ differential cross-section using the g12 normalization procedure results. It is shown in Fig.~\ref{fig:toteff_compareI} and Fig.~\ref{fig:toteff_compareII} that the 2 methods agree with one another except for the very forward regions of $\cos\theta^{\pi^0}_{C.M.}$, where the cross-section using the dynamic normalization is larger than the cross-section measured with the G11 global normalization, however the larger cross-sections at forward $\cos\theta^{\pi^0}_{C.M.}$ agree very well with the past results, see G12 publication ~\cite{Kunkel} for the comparison.
 
 \begin{figure}[h!]\begin{center}
     \includegraphics[width=1.1 \figwidth,height=\hfigheight]{\figures/analysis/EFFICIENCY/G12_XSection_Normaization_Compare_thesisI.pdf}
@@ -181,8 +211,447 @@ To validate the g12 normalization results, the g12 $\pi^0$ differential cross-se
 The statistical uncertainties of the normalization correction was minimized by ensuring that the statistical sample of the data and \abbr{MC} was sufficient in each bin of $z$-vertex, momentum, $\theta \sin\phi$ and $\theta \cos\phi$. The maximum statistical uncertainty was 0.01\%. The systematic uncertainties of the normalization correction was calculated and shown in Sec.~\ref{sec:trkeffuncert}.
 \input{/Users/michaelkunkel/WORK/GIT_HUB/Pi0_Papers/ANALYSIS_NOTE/RESULTS/systematic_trackEfficiency.tex}
 \section{Code Templates}
-Accompanying this manuscript is a file, 'EfficiencyCodes.tar' that has code templates for the user to model their study against. Its advisable to read the codes and the following sections before using the codes.
+Code templates can be found at
+ \url{https://github.com/mckunkel/G12_Corrections/tree/master/Efficiency}.
+The file '\emph{EfficiencyCodes.tar}' is a packed tar file that has code templates for the user to model their study against. Its advisable to read the codes and the following sections before using the codes.
+To untar the file;
+\begin{lstlisting}
+tar -xf EfficiencyCodes.tar
+\end{lstlisting}
+this will produce a folder \newline
+`\emph{EfficiencyCodes}` \newline
+which contains the folders
+\begin{itemize}
+	\item BOSSkimCodes
+	\item Data
+	\item MC
+	\item MakeEffs
+\end{itemize}
 \subsection{Data Processing Codes}
+The folder `\emph{BOSSkimCodes}` contains the folders
+\begin{itemize}
+	\item PIM\_EFF
+	\item PIP\_EFF
+	\item PROT\_EFF
+\end{itemize}
+and the source file
+\begin{itemize}
+	\item buildCentos65.cshrc
+\end{itemize}
+with each containing the skim codes to be used on the output of \abbr{a1c}. It is important that these executables be used for both data and Monte-Carlo. Most of the skimming procedures start around lines 331 of the Ppp\_cE.cc files. These files are responsible for creating a ROOT file with all the needed features for this type of study.
+To build these scripts, please update the 
+\begin{itemize}
+	\item buildCentos65.cshrc
+\end{itemize}
+file to the CENTOS version on JLab cluster and source the script
+\begin{lstlisting}
+source buildCentos65.cshrc
+\end{lstlisting}
+then in each folder  
+\begin{lstlisting}
+scons Ppp_cE.cc
+\end{lstlisting}
+If there are any problems building this software, please contact the \abbr{CLAS} librarian and inquire about the build system for the \abbr{CLAS6} software.
+\subsection{Data Processing Pipeline}
+In the folders 
+\begin{itemize}
+	\item Data
+	\item MC/SimulationCodes
+\end{itemize}
+are submit scripts written in PERL that need to be modified by the user to ensure the proper pipeline. 
+There are helper scripts
+\begin{itemize}
+	\item Data/EXECUTABLES/get\_codes.bash
+	\item MC/SimulationCodes/get\_codes.bash
+\end{itemize}
+that help putting the needed executables in their proper place.
+However, pipelining the procedure is standard CLAS procedure, so this will not be covered in detail here.
+\subsection{Making Track Efficiency Plots}
+In the folders
+\begin{itemize}
+	\item EfficiencyCodes/MakeEffs/X
+\end{itemize} 
+,where X is the particle name, are codes to help the user make the maps for both MC and data.
+The codes starting with name
+\begin{itemize}
+	\item Make\_*.C
+\end{itemize}
+are templates used to create various mappings that were tested.
+The ones used for analysis were derived from 
+\begin{itemize}
+	\item Make\_X\_Efficiency.C
+	\item Make\_X\_Efficiency\_MC.C
+\end{itemize}
+where X is the particle name. The other scripts were in beta testing, use responsibly.
+
+The codes that have name similar to 
+\begin{itemize}
+	\item Compare\_*\_new.C
+\end{itemize}
+create the mapping and ROOT file for lookup.
+Once all of this is done, create a lookup script similar to below and happy analyzing.
+\begin{lstlisting}
+TString P_value = Prot_Hist_num(Vz,P_Ptot_fit);
+
+//cout<<P_value<<"  "<<Ep_value<<"  "<<Em_value<<endl;
+
+
+if (P_value =="") {
+event_prot_eff = 0.0;
+//cout<<Vz<<endl;
+}
+else{
+TH2D *hEff_P= (TH2D*)P_Data.Get(P_value);
+for (int x = 1; x<=hEff_P->GetNbinsX(); x++) {
+for (int y = 1; y<=hEff_P->GetNbinsY(); y++) {
+if (abs(P_Theta_fit*sin(P_Phi_fit*TMath::Pi()/180.) - hEff_P->GetXaxis()->GetBinCenter(x)) <= 4. && abs(P_Theta_fit*cos(P_Phi_fit*TMath::Pi()/180.) - hEff_P->GetYaxis()->GetBinCenter(y)) <= 4.) {
+//cout<<hEff_plot->GetBinContent(x,y)<<endl;
+event_prot_eff = hEff_P->GetBinContent(x,y);
+}
+//cout<<hPimEff_I_II->GetBinContent(x,y)<<"  "<<hEff_plot->GetBinContent(x,y)<<endl;
+}
+}
+}
+\end{lstlisting}
+       
+       
+       
+\begin{lstlisting}
+TString Prot_Hist_num(Double_t z, Double_t p){
+
+
+//cout<<"I am active"<<endl;
+if (z <= -105.  ){
+
+if (p <= 0.5 && p > 0. ) {
+return "hProtEff_I_I";
+}
+
+else if (p <= 0.75 && p > 0.5 ) {
+return "hProtEff_I_II";
+}
+
+else if (p <= 1. && p > 0.75 ) {
+return "hProtEff_I_III";
+}
+
+else if (p <= 1.5 && p > 1. ) {
+return "hProtEff_I_IV";
+}
+
+else if (p <= 2. && p > 1.5 ) {
+return "hProtEff_I_V";
+}
+
+else if (p <= 2.5 && p > 2. ) {
+return "hProtEff_I_VI";
+}
+
+else if (p <= 3. && p > 2.5 ) {
+return "hProtEff_I_VII";
+}
+
+else if ( p > 3. ) {
+return "hProtEff_I_VIII";
+}
+
+else {
+cout<<"NOT IN BOUNDS WITH MOMENTUM"<<endl; return "";
+}
+
+}
+
+else if (z <= -100. && z > -105. ){
+
+if (p <= 0.5 && p > 0. ) {
+return "hProtEff_II_I";
+}
+
+else if (p <= 0.75 && p > 0.5 ) {
+return "hProtEff_II_II";
+}
+
+else if (p <= 1. && p > 0.75 ) {
+return "hProtEff_II_III";
+}
+
+else if (p <= 1.5 && p > 1. ) {
+return "hProtEff_II_IV";
+}
+
+else if (p <= 2. && p > 1.5 ) {
+return "hProtEff_II_V";
+}
+
+else if (p <= 2.5 && p > 2. ) {
+return "hProtEff_II_VI";
+}
+
+else if (p <= 3. && p > 2.5 ) {
+return "hProtEff_II_VII";
+}
+
+else if ( p > 3. ) {
+return "hProtEff_II_VIII";
+}
+
+else {
+cout<<"NOT IN BOUNDS WITH MOMENTUM"<<endl; return "";
+}
+
+}
+
+else if (z <= -95. && z > -100. ){
+
+if (p <= 0.5 && p > 0. ) {
+return "hProtEff_III_I";
+}
+
+else if (p <= 0.75 && p > 0.5 ) {
+return "hProtEff_III_II";
+}
+
+else if (p <= 1. && p > 0.75 ) {
+return "hProtEff_III_III";
+}
+
+else if (p <= 1.5 && p > 1. ) {
+return "hProtEff_III_IV";
+}
+
+else if (p <= 2. && p > 1.5 ) {
+return "hProtEff_III_V";
+}
+
+else if (p <= 2.5 && p > 2. ) {
+return "hProtEff_III_VI";
+}
+
+else if (p <= 3. && p > 2.5 ) {
+return "hProtEff_III_VII";
+}
+
+else if ( p > 3. ) {
+return "hProtEff_III_VIII";
+}
+
+else {
+cout<<"NOT IN BOUNDS WITH MOMENTUM"<<endl; return "";
+}
+
+}
+
+else if (z <= -90. && z > -95. ){
+
+if (p <= 0.5 && p > 0. ) {
+return "hProtEff_IV_I";
+}
+
+else if (p <= 0.75 && p > 0.5 ) {
+return "hProtEff_IV_II";
+}
+
+else if (p <= 1. && p > 0.75 ) {
+return "hProtEff_IV_III";
+}
+
+else if (p <= 1.5 && p > 1. ) {
+return "hProtEff_IV_IV";
+}
+
+else if (p <= 2. && p > 1.5 ) {
+return "hProtEff_IV_V";
+}
+
+else if (p <= 2.5 && p > 2. ) {
+return "hProtEff_IV_VI";
+}
+
+else if (p <= 3. && p > 2.5 ) {
+return "hProtEff_IV_VII";
+}
+
+else if ( p > 3. ) {
+return "hProtEff_IV_VIII";
+}
+
+else {
+cout<<"NOT IN BOUNDS WITH MOMENTUM"<<endl; return "";
+}
+
+}
+
+else if (z <= -85. && z > -90. ){
+
+if (p <= 0.5 && p > 0. ) {
+return "hProtEff_V_I";
+}
+
+else if (p <= 0.75 && p > 0.5 ) {
+return "hProtEff_V_II";
+}
+
+else if (p <= 1. && p > 0.75 ) {
+return "hProtEff_V_III";
+}
+
+else if (p <= 1.5 && p > 1. ) {
+return "hProtEff_V_IV";
+}
+
+else if (p <= 2. && p > 1.5 ) {
+return "hProtEff_V_V";
+}
+
+else if (p <= 2.5 && p > 2. ) {
+return "hProtEff_V_VI";
+}
+
+else if (p <= 3. && p > 2.5 ) {
+return "hProtEff_V_VII";
+}
+
+else if ( p > 3. ) {
+return "hProtEff_V_VIII";
+}
+
+else {
+cout<<"NOT IN BOUNDS WITH MOMENTUM"<<endl; return "";
+}
+
+}
+
+else if (z <= -80. && z > -85. ){
+
+if (p <= 0.5 && p > 0. ) {
+return "hProtEff_VI_I";
+}
+
+else if (p <= 0.75 && p > 0.5 ) {
+return "hProtEff_VI_II";
+}
+
+else if (p <= 1. && p > 0.75 ) {
+return "hProtEff_VI_III";
+}
+
+else if (p <= 1.5 && p > 1. ) {
+return "hProtEff_VI_IV";
+}
+
+else if (p <= 2. && p > 1.5 ) {
+return "hProtEff_VI_V";
+}
+
+else if (p <= 2.5 && p > 2. ) {
+return "hProtEff_VI_VI";
+}
+
+else if (p <= 3. && p > 2.5 ) {
+return "hProtEff_VI_VII";
+}
+
+else if ( p > 3. ) {
+return "hProtEff_VI_VIII";
+}
+
+else {
+cout<<"NOT IN BOUNDS WITH MOMENTUM"<<endl; return "";
+}
+
+}
+
+else if (z <= -75. && z > -80. ){
+
+if (p <= 0.5 && p > 0. ) {
+return "hProtEff_VII_I";
+}
+
+else if (p <= 0.75 && p > 0.5 ) {
+return "hProtEff_VII_II";
+}
+
+else if (p <= 1. && p > 0.75 ) {
+return "hProtEff_VII_III";
+}
+
+else if (p <= 1.5 && p > 1. ) {
+return "hProtEff_VII_IV";
+}
+
+else if (p <= 2. && p > 1.5 ) {
+return "hProtEff_VII_V";
+}
+
+else if (p <= 2.5 && p > 2. ) {
+return "hProtEff_VII_VI";
+}
+
+else if (p <= 3. && p > 2.5 ) {
+return "hProtEff_VII_VII";
+}
+
+else if ( p > 3. ) {
+return "hProtEff_VII_VIII";
+}
+
+else {
+cout<<"NOT IN BOUNDS WITH MOMENTUM"<<endl; return "";
+}
+
+}
+
+else if (z > -75. ){
+
+if (p <= 0.5 && p > 0. ) {
+return "hProtEff_VIII_I";
+}
+
+else if (p <= 0.75 && p > 0.5 ) {
+return "hProtEff_VIII_II";
+}
+
+else if (p <= 1. && p > 0.75 ) {
+return "hProtEff_VIII_III";
+}
+
+else if (p <= 1.5 && p > 1. ) {
+return "hProtEff_VIII_IV";
+}
+
+else if (p <= 2. && p > 1.5 ) {
+return "hProtEff_VIII_V";
+}
+
+else if (p <= 2.5 && p > 2. ) {
+return "hProtEff_VIII_VI";
+}
+
+else if (p <= 3. && p > 2.5 ) {
+return "hProtEff_VIII_VII";
+}
+
+else if ( p > 3. ) {
+return "hProtEff_VIII_VIII";
+}
+
+else {
+cout<<"NOT IN BOUNDS WITH MOMENTUM"<<endl; return "";
+}
+
+}
+
+else {
+//cout<<"NOT IN BOUNDS WITH z VERTEX"<<endl;
+return "";
+}
+
+//cout<<"I am at the end "<<z<<"  "<<p<<endl;
+
+}
+
+\end{lstlisting}        
+Compare
 \bibliographystyle{unsrt}
 \bibliography{PI0}
 \end{document}
